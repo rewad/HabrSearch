@@ -1,0 +1,108 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style type="text/css">
+        #fkbx {
+            background-color: #fff;
+            border: 1px solid rgb(185,185,185);
+            border-radius: 1px;
+            border-top-color: rgb(160,160,160);
+            cursor: text;
+            display: inline-block;
+            font: 18px arial,sans-serif;
+            height: 25px;
+            line-height: 36px;
+            max-width: 400px;
+            position: relative;
+            width: 618px;
+        }
+
+        
+
+        #btn {
+            border: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background: none;
+            cursor: pointer;
+            padding: 7px 15px;
+            display: inline-block; 
+            letter-spacing: 1px;
+            font-weight: 200px;
+            outline: none;
+            position: relative; 
+            transition: all 0.3s;
+            background: #cb4e4e;
+            color: #fff;
+            box-shadow: 0 6px #ab3c3c;
+            -webkit-transition: none;
+            -moz-transition: none;
+            transition: none;
+            border-radius: 5px;
+            box-shadow: 6px 0 #ab3c3c;
+        }
+
+        }
+    </style>
+
+    <link href='@Url.Content("/content/themes/base/all.css")' rel="stylesheet" type="text/css" />
+    <title>@ViewData["result"]</title>
+</head>
+<body>
+    <link href='@Url.Content("/content/themes/base/all.css")' rel="stylesheet" type="text/css" />
+    <script src='@Url.Content("~/scripts/jquery-1.6.4.min.js")' type="text/javascript"></script>
+    <script src='@Url.Content("~/scripts/jquery-ui-1.11.4.min.js")' type="text/javascript"></script>
+    <div style="width:500px; margin:auto">
+        <div>
+            @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+            {
+                <input type="hidden" />
+                <input type="text" name="textq" class id="fkbx" value='@ViewBag.ls.query' data-autocomplete-source='@Url.Action("AutocompleteSearch", "Home")' />
+                <input type="submit" class id="btn" value="Найти" />
+            }
+
+        </div> 
+
+        <div>
+            <h6>Всего документов: @ViewBag.ls.num</h6>
+            <h6>Время: @ViewBag.ls.time</h6>
+ 
+            <div>
+                @foreach (var v in ViewBag.ls.results)
+            {
+                    <div style="width:800px; color:#000; font-size:100%;">
+                        <h2><a href="https://habrahabr.ru/post/@v.id">@v.title</a></h2>
+                        <site style="color:cadetblue"> "https://habrahabr.ru/post/@v.id"</site>
+                        <div>
+                            <span>@v.snippet</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div>
+            @foreach (var v in ViewBag.ls.pages)
+            {
+                <a href="Search?textq=@ViewBag.ls.query&page=@v"> @v </a> 
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function () {
+        $("[data-autocomplete-source]").each(function () {
+            var target = $(this);
+            target.autocomplete({ source: target.attr("data-autocomplete-source") });
+        });
+    });
+    </script>
+</body>
+</html>
